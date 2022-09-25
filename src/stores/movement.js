@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { defineStore, storeToRefs } from "pinia";
-import { useItemsStore2 } from "./itemstest";
-import { useItemsStoreLeft } from "./itemstestLeft";
-import { useItemsStoreRight } from "./itemstestRight";
+import { useItemsStore2 } from "./items";
+import { useItemsStoreLeft } from "./itemsLeft";
+import { useItemsStoreRight } from "./itemsRight";
 
 export const useMovementStore = defineStore("movement", () => {
   const itemsStore = useItemsStore2();
@@ -10,25 +10,20 @@ export const useMovementStore = defineStore("movement", () => {
   const itemsStoreRight = useItemsStoreRight();
 
   const { selected } = storeToRefs(itemsStore);
-  const { selectNone } = itemsStore;
+  const { selectNone, selectionWhere } = itemsStore;
 
-  const { itemsFilteredLeft, initialLeft } = storeToRefs(itemsStoreLeft);
+  const { itemsFilteredLeft, initialLeft, itemsSelectedLeft } = storeToRefs(itemsStoreLeft);
   const { updateItemsLeft, selectAllLeft } = itemsStoreLeft;
 
-  const { itemsFilteredRight, initialRight } = storeToRefs(itemsStoreRight);
+  const { itemsFilteredRight, initialRight, itemsSelectedRight } = storeToRefs(itemsStoreRight);
   const { updateItemsRight, selectAllRight } = itemsStoreRight;
 
-  const itemsSelectedLeft = ref([]);
-  const itemsSelectedRight = ref([]);
-
   function moveOne(itemsSelectedFrom, itemsFrom, itemsTo) {
-    itemsSelectedFrom.value = selected.value.filter((selectedItem) => {
-      return itemsFrom.value.includes(selectedItem);
-    });
+    selectionWhere(itemsSelectedFrom, itemsFrom)
 
     itemsTo.value.push(...itemsSelectedFrom.value);
 
-    selectNone(itemsFrom);
+    selectNone(itemsFrom, selected);
 
     itemsFrom.value = itemsFrom.value.filter((item) => {
       return !itemsSelectedFrom.value.includes(item);
@@ -44,11 +39,16 @@ export const useMovementStore = defineStore("movement", () => {
   }
 
   function moveOneRight() {
+    console.log(itemsSelectedLeft)
+
     moveOne(itemsSelectedLeft, initialLeft, initialRight);
+    console.log(itemsSelectedLeft)
+    itemsSelectedLeft.value = []
   }
 
   function moveOneLeft() {
     moveOne(itemsSelectedRight, initialRight, initialLeft);
+    itemsSelectedRight.value = []
   }
 
   function moveAllRight() {
@@ -66,5 +66,7 @@ export const useMovementStore = defineStore("movement", () => {
     moveAllLeft,
     itemsFilteredRight,
     itemsFilteredLeft,
+    itemsSelectedLeft,
+    itemsSelectedRight,
   };
 });

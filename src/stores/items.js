@@ -32,6 +32,12 @@ export const useItemsStore2 = defineStore("items", () => {
 
   const selected = ref([]);
 
+  function selectionWhere(itemsSelectedFrom, itemsFrom) {
+    itemsSelectedFrom.value = selected.value.filter((selectedItem) => {
+      return itemsFrom.value.includes(selectedItem);
+    });
+  }
+
   //toggle whether an item in filtered list is selected
   function toggleSelected(idToFind) {
     const item = items.value.find((obj) => obj.id === idToFind);
@@ -43,18 +49,32 @@ export const useItemsStore2 = defineStore("items", () => {
     if (item.selected) {
       selected.value.push(item);
     } else {
-      selected.value = selected.value.filter(function (selectedItem) {
+      selected.value = selected.value.filter((selectedItem) => {
         return item.id != selectedItem.id;
       });
     }
   }
 
   //select all filtered items
-  function selectAll(itemsFiltered) {
+  function selectAll(itemsFiltered, selectedSide) {
     for (const item of itemsFiltered.value) {
       item.selected = true;
-      selected.value.push(item)
+      selected.value.push(item);
+      selectedSide.value.push(item)
     }
+
+    const uniqueIdsSide = []
+    selectedSide.value = selectedSide.value.filter(element => {
+      const isDuplicate = uniqueIdsSide.includes(element.id);
+    
+      if (!isDuplicate) {
+        uniqueIdsSide.push(element.id);
+    
+        return true;
+      }
+    
+      return false;
+    });
 
     const uniqueIds = []
     selected.value = selected.value.filter(element => {
@@ -68,17 +88,15 @@ export const useItemsStore2 = defineStore("items", () => {
     
       return false;
     });
-
-    console.log(selected.value)
   }
 
   //select no items
-  function selectNone(itemsFiltered) {
+  function selectNone(itemsFiltered, itemsSelected) {
     for (const item of itemsFiltered.value) {
       item.selected = false;
     }
 
-    selected.value.splice(0,selected.value.length)
+    itemsSelected.value = []
   }
 
   return {
@@ -88,5 +106,6 @@ export const useItemsStore2 = defineStore("items", () => {
     selectNone,
     filteringFunction,
     selected,
+    selectionWhere
   };
 });

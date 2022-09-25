@@ -1,5 +1,6 @@
 <script setup>
-import Button from "../common/Button.vue";
+import ButtonSelectAll from "./ButtonSelectAll.vue";
+import ButtonSelectNone from "./ButtonSelectNone.vue";
 
 defineProps({
   data: {
@@ -10,16 +11,8 @@ defineProps({
 
 <template>
   <div class="w-full flex">
-    <Button @click="data.selectAll" :classType="'def'">
-      <template #btnName>
-        Select All
-      </template>
-    </Button>
-    <Button :classType="'alt'" @click="data.selectNone">
-      <template #btnName>
-        Select None
-      </template>
-    </Button>
+    <ButtonSelectAll :data="data"/>
+    <ButtonSelectNone :data="data"/>
   </div>
 </template>
 

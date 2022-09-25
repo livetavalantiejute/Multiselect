@@ -1,26 +1,28 @@
 <script setup>
 import { useMovementStore } from "../../stores/movement";
-import ButtonMove from "../common/ButtonMove.vue";
-import Left from "../icons/Left.vue";
+import ButtonMoveAllRight from "./ButtonMoveAllRight.vue";
+import ButtonMoveOneRight from "./ButtonMoveOneRight.vue";
+import ButtonMoveOneLeft from "./ButtonMoveOneLeft.vue";
+import ButtonMoveAllLeft from "./ButtonMoveAllLeft.vue";
 
 const movementStore = useMovementStore();
 const { moveOneRight, moveAllRight, moveOneLeft, moveAllLeft } = movementStore;
+
+defineProps({
+  disabled: {
+    type: Boolean,
+  },
+});
+
+const buttonClass = ["rotate-90", "md:rotate-0"];
 </script>
 
 <template>
-  <div class="flex flex-col self-center mx-4">
-    <ButtonMove @click="moveAllRight" :classType="'def'">
-      <template #btnName> <Left /> </template>
-    </ButtonMove>
-    <ButtonMove @click="moveOneRight" :classType="'alt'">
-      <template #btnName> > </template>
-    </ButtonMove>
-    <ButtonMove @click="moveOneLeft" :classType="'alt'">
-      <template #btnName> &#60; </template>
-    </ButtonMove>
-    <ButtonMove @click="moveAllLeft" :classType="'def'">
-      <template #btnName> &#60;&#60; </template>
-    </ButtonMove>
+  <div class="flex self-center mx-4 flex-row md:flex-col">
+    <ButtonMoveAllRight :class="buttonClass"/>
+    <ButtonMoveOneRight :class="buttonClass"/>
+    <ButtonMoveOneLeft :class="buttonClass"/>
+    <ButtonMoveAllLeft :class="buttonClass"/>
   </div>
 </template>
 

@@ -43,7 +43,7 @@ const rightData = {
 </script>
 
 <template>
-  <main class="flex p-8">
+  <main class="flex p-8 flex-col md:flex-row">
     <Multiselect :side="left" :data="leftData" />
     <ButtonsMove />
     <Multiselect :side="right" :data="rightData" />

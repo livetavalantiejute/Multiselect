@@ -1,15 +1,16 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { useItemsStore2 } from "./itemstest";
+import { useItemsStore2 } from "./items";
 
 export const useItemsStoreRight = defineStore("itemsRight", () => {
   const itemsStore = useItemsStore2();
 
-  const { filteringFunction, selectAll, selectNone } = itemsStore;
+  const { filteringFunction, selectAll, selectNone, toggleSelected, selectionWhere } = itemsStore;
 
   const searchTermRight = ref("");
   const itemsFilteredRight = ref([]); //filtered after search
   const initialRight = ref([]); //initial and moved items
+  const itemsSelectedRight = ref([]);
 
   itemsFilteredRight.value = filteringFunction(
     itemsFilteredRight,
@@ -17,11 +18,11 @@ export const useItemsStoreRight = defineStore("itemsRight", () => {
   ).value;
 
   function selectAllRight() {
-    selectAll(itemsFilteredRight);
+    selectAll(itemsFilteredRight, itemsSelectedRight);
   }
 
   function selectNoneRight() {
-    selectNone(itemsFilteredRight);
+    selectNone(itemsFilteredRight, itemsSelectedRight);
   }
 
   function updateItemsRight() {
@@ -31,12 +32,19 @@ export const useItemsStoreRight = defineStore("itemsRight", () => {
     ).value;
   }
 
+  function getSelectedRight(idToFind) {
+    itemsSelectedRight.value = toggleSelected(idToFind)
+    selectionWhere(itemsSelectedRight, initialRight)
+  } 
+
   return {
     initialRight,
     itemsFilteredRight,
     searchTermRight,
     selectAllRight,
     selectNoneRight,
-    updateItemsRight
+    updateItemsRight,
+    itemsSelectedRight,
+    getSelectedRight
   };
 });

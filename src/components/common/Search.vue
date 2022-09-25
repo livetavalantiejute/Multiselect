@@ -1,6 +1,6 @@
 <script setup>
-import { useItemsStoreLeft } from "../../stores/itemstestLeft";
-import { useItemsStoreRight } from "../../stores/itemstestRight";
+import { useItemsStoreLeft } from "../../stores/itemsLeft";
+import { useItemsStoreRight } from "../../stores/itemsRight";
 import { storeToRefs } from "pinia";
 
 const itemsStoreLeft = useItemsStoreLeft();
@@ -16,21 +16,29 @@ const props = defineProps({
     type: Object,
   },
 });
+
+const searchClassList = [
+  "px-4",
+  "py-2",
+  "w-full"
+]
 </script>
 
 <template>
-  <div class="border-b-2 border-slate-600 px-4 py-2">
+  <div class="border-b-2 border-slate-600">
     <input
       placeholder="Search"
       v-if="props.data.side == 'left'"
       v-model="searchTermLeft"
       @input="updateItemsLeft"
+      :class="searchClassList"
     />
     <input
       placeholder="Search"
       v-if="props.data.side == 'right'"
       v-model="searchTermRight"
       @input="updateItemsRight"
+      :class="searchClassList"
     />
   </div>
 </template>
