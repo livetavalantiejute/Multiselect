@@ -1,10 +1,10 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import Multiselect from "./components/Multiselect.vue";
-import { useItemsStore2 } from "./stores/itemstest";
+import { useItemsStore2 } from "./stores/items";
 import { useMovementStore } from "./stores/movement";
-import { useItemsStoreLeft } from "./stores/itemstestLeft";
-import { useItemsStoreRight } from "./stores/itemstestRight";
+import { useItemsStoreLeft } from "./stores/itemsLeft";
+import { useItemsStoreRight } from "./stores/itemsRight";
 import ButtonsMove from "./components/buttonsLists/ButtonsMove.vue";
 // import TheWelcome from "./components/TheWelcome.vue";
 
